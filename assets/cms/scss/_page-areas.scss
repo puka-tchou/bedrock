@@ -76,7 +76,7 @@ div.ccm-block-edit.ccm-block-highlight {
 div.ccm-global-area {
   div.ccm-block-edit.ccm-menu-item-hover,
   div.ccm-block-edit.ccm-block-highlight {
-    outline: 1px solid #80d0ec;
+    border: 1px solid $edit-mode-global-area-border-color;
   }
 }
 
@@ -85,10 +85,10 @@ div.ccm-global-area {
   */
 
 div.ccm-area {
-  outline: 1px solid transparent;
-  outline-offset: -1px;
+  border:1px solid $edit-mode-area-border-color;
+
   /* margin-bottom: 50px; */
-  transition: outline-color 0.5 s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: border-color 0.5 s cubic-bezier(0.19, 1, 0.22, 1);
 
   /**
    * draggable blocks into area
@@ -120,7 +120,7 @@ div.ccm-area.ccm-parent-menu-item-active,
 div.ccm-area.ccm-area-accepts-blocks,
 div.ccm-area.ccm-area-highlight,
 div.ccm-area.ccm-menu-item-hover {
-  outline: 1px solid #e6e6e6;
+  border-color: darken($edit-mode-area-border-color, 0.4);
 
   > div.ccm-area-footer {
     display: block;
@@ -130,11 +130,8 @@ div.ccm-area.ccm-menu-item-hover {
 
 div.ccm-area-footer {
   //bottom: -35px;
-  left: 0;
   max-width: 100%;
-  opacity: 0;
   padding-left: 20px;
-  position: absolute;
   transition: opacity 0.5 s cubic-bezier(0.19, 1, 0.22, 1);
   white-space: nowrap;
   //padding-top: 15px;
@@ -165,27 +162,10 @@ div.ccm-area-footer {
 }
 
 /**
- * Hovering over areas
- */
-div.ccm-menu-item-hover {
-  > div.ccm-area-footer {
-    > div.ccm-area-footer-handle {
-      span {
-        opacity: 1 !important;
-      }
-    }
-  }
-}
-
-/**
  * Empty areas
  */
 div.ccm-area[data-total-blocks='0'] {
   min-height: 50px;
-
-  outline: 1px solid #e6e6e6;
-  outline-offset: -1px;
-
 }
 
 /**
@@ -194,7 +174,6 @@ div.ccm-area[data-total-blocks='0'] {
 @-moz-document url-prefix() {
   div.ccm-area[data-total-blocks='0'] {
     border: 1px solid #e6e6e6;
-    outline: none !important;
   }
 }
 
