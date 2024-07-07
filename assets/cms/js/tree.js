@@ -310,8 +310,15 @@ ConcreteTree.prototype = {
     getSelectedNodeKeys: function (node, selected) {
         var my = this
 
-        // Initialize selected and deselected arrays
+        // Initialize selected array
         selected = selected || []
+
+        // Remove keys that are not in the tree anymore
+        selected = selected.filter(function (key) {
+            // return my.$element.fancytree('getNodeByKey', key) !== null
+            return $.ui.fancytree.getTree(my.$element).getNodeByKey(parseInt(key)) !== null
+        })
+
         // Walk through all child nodes
         if (node.hasChildren()) {
             node.getChildren().forEach(function (child) {
