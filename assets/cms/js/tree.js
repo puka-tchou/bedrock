@@ -315,7 +315,6 @@ ConcreteTree.prototype = {
 
         // Remove keys that are not in the tree anymore
         selected = selected.filter(function (key) {
-            // return my.$element.fancytree('getNodeByKey', key) !== null
             return $.ui.fancytree.getTree(my.$element).getNodeByKey(parseInt(key)) !== null
         })
 
