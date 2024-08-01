@@ -7,6 +7,9 @@ div#ccm-toolbar {
   position: fixed;
   top: 0;
   width: 100%;
+  @media only screen and (max-width: 768px) {
+    width: 100vw;
+  }
   z-index: $index-level-main-bar; /* over the top of the highlighter, which is 1000 */
 
   .ccm-toolbar-accessibility-title {
