@@ -376,6 +376,22 @@ ul.ccm-mobile-menu {
   }
 }
 
+.ccm-toolbar-mobile-add-pages-button {
+  border-left: 1px solid $gray-200;
+  cursor: pointer;
+  height: 47px;
+  padding: 14px 18px;
+
+  svg {
+    fill: $gray-600;
+    height: 16px;
+    margin: 0 auto;
+    transition: fill 0.25s ease-in-out;
+    width: 16px;
+    vertical-align: baseline;
+  }
+}
+
 .ccm-mobile-toolbar-menu {
   display: none;
 
