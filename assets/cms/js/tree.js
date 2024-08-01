@@ -140,8 +140,8 @@ ConcreteTree.prototype = {
                 if (options.chooseNodeInForm) {
                     const keys = my.getSelectedNodeKeys(data.tree.getRootNode(), ajaxData.treeNodeSelectedIDs)
                     if (keys.length) {
-                    options.onSelect(keys)
-                }
+                        options.onSelect(keys)
+                    }
                 }
             },
 
