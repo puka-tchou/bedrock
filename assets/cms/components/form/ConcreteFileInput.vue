@@ -1,6 +1,6 @@
 <template>
     <div class="ccm-item-selector-group">
-        <input type="hidden" :name="inputName" :value="selectedFileID" />
+        <input type="hidden" :name="inputName" :value="selectedFileID" ref="input" />
 
         <div class="ccm-item-selector-choose" v-if="!selectedFile && !isLoading">
             <button type="button" @click="openChooser" class="btn btn-secondary">
@@ -11,7 +11,7 @@
         <div v-if="isLoading">
             <div class="btn-group">
                 <div class="btn btn-secondary"><svg class="ccm-loader-dots"><use xlink:href="#icon-loader-circles" /></svg></div>
-                <button type="button" @click="selectedFileID = null" class="ccm-item-selector-reset btn btn-secondary">
+                <button type="button" @click="clearFile" class="ccm-item-selector-reset btn btn-secondary">
                     <i class="fa fa-times-circle"></i>
                 </button>
             </div>
@@ -45,10 +45,11 @@ export default {
     props: {
         inputName: {
             type: String,
-            required: true
+            default: ''
         },
         fileId: {
-            type: Number
+            type: Number,
+            default: 0
         },
         chooseText: {
             type: String
@@ -57,7 +58,18 @@ export default {
             type: Array
         }
     },
+    prop: ['fileId'],
+    model: {
+        prop: 'fileId',
+        event: 'change'
+    },
     watch: {
+        fileId: {
+            immediate: true,
+            handler(value) {
+                this.selectedFileID = this.fileId
+            }
+        },
         selectedFileID: {
             immediate: true,
             handler(value) {
@@ -71,6 +83,12 @@ export default {
                     if (!this.isFirstRun) {
                         this.$emit('change', null)
                     }
+                }
+                if (!this.isFirstRun && this.inputName) {
+                    // Fire the jQuery change event.
+                    // @deprecated - do not use this unless you have to. Use this component directly instead and listen
+                    // to its change event. This will be removed when the jQuery dependency is removed.
+                    $(this.$refs.input).trigger('change')
                 }
                 this.isFirstRun = false
             }
@@ -95,6 +113,10 @@ export default {
                 my.loadFile(r.fID)
             }, options)
         },
+        clearFile: function() {
+            this.selectedFileID = null
+            this.$emit('selectedfile', null)
+        },
         loadFile(fileId) {
             var my = this
             my.isLoading = true
@@ -102,6 +124,7 @@ export default {
                 my.selectedFile = r.files[0]
                 my.selectedFileID = fileId
                 my.isLoading = false
+                my.$emit('selectedfile', r.files[0])
             })
         }
 

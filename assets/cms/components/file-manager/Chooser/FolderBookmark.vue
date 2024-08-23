@@ -5,7 +5,8 @@
                         @breadcrumbItemClick="activeFolder = $event.folderId"
                         :title="title"/>
 
-        <files :selectedFiles.sync="selectedFiles"
+        <files :key-prefix="'folder-bookmark' + activeFolder"
+               :selectedFiles.sync="selectedFiles"
                :resultsFormFactor="formFactor"
                :routePath="routePath + activeFolder"
                :enable-pagination="true"
@@ -42,7 +43,6 @@ export default {
             validator: value => ['grid', 'list'].indexOf(value) !== -1
         },
         startFolder: {
-            type: String,
             required: true
         },
         title: {

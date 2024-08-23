@@ -1,11 +1,14 @@
 <template>
     <div>
         <chooser-header :resultsFormFactor.sync="formFactor"
+                        :resultsSearchQuery.sync="searchQuery"
                         :breadcrumb-items="breadcrumbItems"
+                        :enable-search="searchChooserIsEnabled"
                         @breadcrumbItemClick="activeFolder = $event.folderId"
                         :title="title"/>
 
         <files :selectedFiles.sync="selectedFiles"
+               key-prefix="file-manager"
                :resultsFormFactor="formFactor"
                :routePath="routePath + activeFolder"
                :enable-pagination="true"
@@ -32,9 +35,15 @@ export default {
         selectedFiles: [],
         breadcrumbItems: [],
         routePath: '/ccm/system/file/chooser/get_folder_files/',
-        formFactor: 'grid'
+        formFactor: 'grid',
+        searchQuery: ''
     }),
     props: {
+        searchChooserIsEnabled: {
+            type: Boolean,
+            required: false,
+            default: true
+        },
         resultsFormFactor: {
             type: String,
             required: false,
@@ -42,7 +51,6 @@ export default {
             validator: value => ['grid', 'list'].indexOf(value) !== -1
         },
         startFolder: {
-            type: String,
             required: true
         },
         title: {
@@ -59,7 +67,7 @@ export default {
     },
     created() {
         this.activeFolder = this.$props.startFolder
-        this.fetchBreadcrumb(this.activeFolder)
+        // this.fetchBreadcrumb(this.activeFolder) // Not sure why this is here, it leads to duplicate requests and I don't think it needs to be
     },
     methods: {
         fetchBreadcrumb(folderId = '') {
@@ -81,15 +89,19 @@ export default {
         formFactor(value) {
             this.$emit('update:resultsFormFactor', value)
         },
+        searchQuery(value) {
+            this.$emit('update:resultsSearchQuery', value)
+        },
         startFolder(value) {
             this.activeFolder = value
-            this.fetchBreadcrumb(value)
+            // this.fetchBreadcrumb(value) // Not sure why this is here, it leads to duplicate requests and I don't think it needs to be
         }
     },
     mounted() {
         this.formFactor = this.resultsFormFactor
+        this.searchQuery = this.resultsSearchQuery
         this.activeFolder = this.$props.startFolder
-        this.fetchBreadcrumb(this.activeFolder)
+        // this.fetchBreadcrumb(this.activeFolder) // Not sure why this is here, it leads to duplicate requests and I don't think it needs to be
     }
 }
 </script>

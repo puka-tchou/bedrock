@@ -154,11 +154,6 @@
                 menu: $('[data-area-menu=' + elem.attr('data-launch-area-menu') + ']')
             }
 
-            if (my.getElem().hasClass('ccm-global-area')) {
-                menu_config.menuActiveClass += ' ccm-global-area-highlight'
-                menu_config.highlightClassName += ' ccm-global-area-highlight'
-            }
-
             my.setAttr('menu', new ConcreteMenu(elem, menu_config))
 
             $menuElem.find('a[data-menu-action=add-inline]')
@@ -179,36 +174,6 @@
                         btHandle: $(this).data('block-type-handle')
                     })
                     return false
-                })
-
-            $menuElem.find('a[data-menu-action=edit-container-layout]')
-                .off('click.edit-mode')
-                .on('click.edit-mode', function (e) {
-                    // we are going to place this at the END of the list.
-                    var $link = $(this)
-                    var bID = parseInt($link.attr('data-container-layout-block-id'))
-                    var editor = Concrete.getEditMode()
-                    var block = _.findWhere(editor.getBlocks(), { id: bID })
-                    Concrete.event.fire('EditModeBlockEditInline', {
-                        block: block,
-                        arGridMaximumColumns: $link.attr('data-area-grid-maximum-columns'),
-                        event: e
-                    })
-                    return false
-                })
-
-            $menuElem.find('a[data-menu-action=edit-container-layout-style]')
-                .off('click.edit-mode')
-                .on('click.edit-mode', function (e) {
-                    e.preventDefault()
-                    // we are going to place this at the END of the list.
-                    var $link = $(this)
-                    var bID = parseInt($link.attr('data-container-layout-block-id'))
-                    var editor = Concrete.getEditMode()
-                    var block = _.findWhere(editor.getBlocks(), { id: bID })
-                    Concrete.event.fire('EditModeBlockEditInline', {
-                        block: block, event: e, action: CCM_DISPATCHER_FILENAME + '/ccm/system/dialogs/block/design'
-                    })
                 })
 
             $menuElem.find('a[data-menu-action=area-add-block]')
@@ -376,18 +341,18 @@
                 if (my.getDragAreas().length) {
                     throw new Error('No block supplied')
                 }
-                elem = $('<div class="ccm-area-drag-area"/>')
+                elem = $('<div class="ccm-area-drag-area ccm-ui"/>')
                 drag_area = new Concrete.DragArea(elem, my, block)
                 my.getBlockContainer().prepend(elem)
             } else {
-                elem = $('<div class="ccm-area-drag-area"/>')
+                elem = $('<div class="ccm-area-drag-area ccm-ui"/>')
                 drag_area = new Concrete.DragArea(elem, my, block)
                 block.getContainer().after(elem)
             }
 
             if (!my.getElem().parent().is('#ccm-stack-container')) {
-                var template = _(ccmi18n.emptyArea).template()
-                elem.text(template({ area_handle: my.getElem().data('area-display-name') }))
+                var template = _('<span>' + ccmi18n.emptyArea + '</span>').template()
+                elem.html(template({ area_handle: my.getElem().data('area-display-name') }))
             }
             my.getDragAreas().push(drag_area)
             return drag_area

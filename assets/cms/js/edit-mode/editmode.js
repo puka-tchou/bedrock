@@ -322,6 +322,12 @@
                 }
             }
 
+            my.bindEvent('EditModeBlockDragInitialization', function(event, data) {
+                var block = data.block
+                var areas = my.getAreas()
+                block.setupAreaDragPayloads(areas)
+            })
+
             my.bindEvent('EditModeBlockDrag', _.throttle(function editModeEditModeBlockDragEventHandler(event, data) {
                 if (!my.getDragging()) {
                     return
@@ -330,7 +336,7 @@
                 var areas = my.getAreas()
                 var contenders
 
-                if (block instanceof Concrete.Layout) {
+                if (block instanceof Concrete.Layout || block instanceof Concrete.ContainerBlock) {
                     areas = [_(areas).find(function (a) {
                         return block.getArea() === a
                     })]
@@ -374,6 +380,12 @@
                 Concrete.event.fire('EditModeSelectableContender')
                 html.removeClass('ccm-block-dragging')
 
+                _(my.getAreas()).map((area) => {
+                    area.getElem().removeClass('ccm-area-accepts-block-drag-payload')
+                })
+
+                my.setDragging(false)
+
                 if (data.block instanceof Concrete.BlockType) return
                 my.scanBlocks()
             })
@@ -414,6 +426,10 @@
                         }
                         ConcreteAjaxRequest.validateResponse(r, function(ok) {
                             if (ok) {
+                                ConcreteEvent.fire('EditModeBlockMoveComplete', {
+                                    block: block,
+                                    area: targetArea
+                                })
                                 ConcreteToolbar.disableDirectExit()
                             } else {
                                 if (data.revert) {

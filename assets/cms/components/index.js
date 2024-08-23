@@ -1,6 +1,3 @@
-import { ToggleButton } from 'vue-js-toggle-button'
-import VCalendar from 'v-calendar/lib/components/calendar.umd'
-import VDatePicker from 'v-calendar/lib/components/date-picker.umd'
 import Toggle from './form/Toggle'
 import ContextMenu from './menu/ContextMenu'
 import MenuButton from './menu/MenuButton'
@@ -20,23 +17,35 @@ import ConcreteFileChooser from './file-manager/Chooser'
 import ConcreteExpressEntrySelector from './express/Selector'
 import ConcreteUserChooser from './user/Chooser'
 import ConcreteGroupChooser from './groups/Chooser'
+import ConcreteSelect from './form/ConcreteSelect'
+import ConcreteAjaxSelect from './form/ConcreteAjaxSelect'
+import ConcreteExpressEntrySelect from './form/ConcreteExpressEntrySelect'
+import ConcretePageSelect from './form/ConcretePageSelect'
+import ConcreteUserSelect from './form/ConcreteUserSelect'
+import ConcreteOptionSelect from './form/ConcreteOptionSelect'
+import ConcreteLocaleSelect from './form/ConcreteLocaleSelect'
+import ConcreteToolbarSiteList from './toolbar/ConcreteToolbarSiteList'
+import ConcreteGroupInput from './form/ConcreteGroupInput'
 import ConcreteFileUploader from './file-manager/Uploader/UploadFromComputer'
+import ConcreteAnnouncementBroadcast from './Announcement/Broadcast'
+import ConcreteThumbnailEditor from './Image/ThumbnailEditor'
+import ConcreteHelpModal from './Help/Modal'
 import Board from './Board'
 import BoardSlot from './BoardSlot'
-import BoardInstanceRule from './BoardInstanceRule'
 import BoardInstanceRuleList from './BoardInstanceRuleList'
 import IconSelector from './form/IconSelector'
 import CompletedProcessList from './CompletedProcessList'
 import RunningProcessList from './RunningProcessList'
 import ThemeCustomizer from './customizer/ThemeCustomizer'
+import ColorPageCustomizerWidget from './customizer/ColorPageCustomizerWidget'
 import ThemeCustomizerPreview from './customizer/ThemeCustomizerPreview'
+import ToolbarSliderWidget from './customizer/block/ToolbarSliderWidget'
+import ToolbarSectionWidget from './customizer/block/ToolbarSectionWidget'
+import PasswordInput from './form/PasswordInput'
 
 // Export our component library
 export default {
-    VCalendar,
-    VDatePicker,
     Toggle,
-    ToggleButton,
     ContextMenu,
     MenuButton,
     MenuDivider,
@@ -48,21 +57,36 @@ export default {
     ConcreteFileInput,
     ConcreteThemeColorInput,
     ConcreteExpressEntryInput,
+    ConcreteExpressEntrySelect,
     ConcreteExpressEntrySelector,
     ConcreteFileUploader,
     ConcreteGroupChooser,
+    ConcreteGroupInput,
     ConcretePageChooserSearch,
     ConcretePageInput,
+    ConcreteSelect,
+    ConcreteAjaxSelect,
+    ConcretePageSelect,
+    ConcreteUserSelect,
+    ConcreteOptionSelect,
+    ConcreteLocaleSelect,
+    ConcreteThumbnailEditor,
+    ConcreteToolbarSiteList,
     ConcreteUserInput,
     ConcreteEventOccurrenceInput,
     ConcreteFileDirectoryInput,
+    ConcreteAnnouncementBroadcast,
+    ConcreteHelpModal,
     Board,
     BoardSlot,
-    BoardInstanceRule,
     BoardInstanceRuleList,
     IconSelector,
     RunningProcessList,
     CompletedProcessList,
     ThemeCustomizer,
-    ThemeCustomizerPreview
+    ThemeCustomizerPreview,
+    ToolbarSliderWidget,
+    ToolbarSectionWidget,
+    ColorPageCustomizerWidget,
+    PasswordInput
 }

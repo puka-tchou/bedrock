@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div :class="{'card': true, 'card-body': true, 'process-card': true}"
+        <div :class="{'card': format === 'card', 'card-body': format === 'card', 'process-card': format === 'card'}"
         v-for="process in processes" :key="process.id">
             <div class="row">
                 <div class="col-md-9 running-process-name">
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+/* global CCM_DISPATCHER_FILENAME, CCM_SERVER_EVENTS_URL, CCM_SECURITY_TOKEN */
 /* eslint-disable no-new */
 /* eslint eqeqeq: 0 */
 import Icon from './Icon'
@@ -42,6 +43,11 @@ export default {
         processes: {
             type: Array,
             required: true
+        },
+        format: {
+            type: String,
+            required: false,
+            default: 'card' /* card or empty */
         }
     },
     data: () => ({
@@ -117,36 +123,45 @@ export default {
             }
         })
 
-        ConcreteEvent.subscribe('ConcreteServerEventProcessOutput', function(e, data) {
-            if (data.processId) {
-                my.processes.forEach(function (thisProcess) {
-                    if (thisProcess.id === data.processId) {
-                        thisProcess.details.push(data.message)
-                    }
-                })
-            }
-        })
-        ConcreteEvent.subscribe('ConcreteServerEventBatchUpdated', function(e, data) {
-            var total = data.batch.totalJobs
-            var progress = total - data.batch.pendingJobs
-            var percent = Math.round(progress / total * 100)
+        if (typeof (CCM_SERVER_EVENTS_URL) !== 'undefined') {
+            const eventSourceUrl = new URL(CCM_SERVER_EVENTS_URL)
+            eventSourceUrl.searchParams.append('topic', '{+siteUrl}/concrete/events/processes/{+eventName}')
+            const eventSource = new EventSource(eventSourceUrl, {
+                withCredentials: true
+            })
 
-            my.processes.forEach(function (thisProcess) {
-                if (thisProcess.batch && thisProcess.batch.id == data.batch.id) {
-                    thisProcess.progress = percent
-                    thisProcess.batch = data.batch
+            eventSource.onmessage = event => {
+                var data = JSON.parse(event.data)
+                if (Object.prototype.hasOwnProperty.call(data, 'batch')) {
+                    // Batch Updated
+                    var total = data.batch.totalJobs
+                    var progress = total - data.batch.pendingJobs
+                    var percent = Math.round(progress / total * 100)
+
+                    my.processes.forEach(function (thisProcess) {
+                        if (thisProcess.batch && thisProcess.batch.id == data.batch.id) {
+                            thisProcess.progress = percent
+                            thisProcess.batch = data.batch
+                        }
+                    })
+                } else if (Object.prototype.hasOwnProperty.call(data, 'exitCode')) {
+                    // Close process
+                    my.processes.forEach(function (thisProcess) {
+                        if (thisProcess.id == data.process.id) {
+                            thisProcess.dateCompleted = data.process.dateCompleted
+                            thisProcess.dateCompletedString = data.process.dateCompletedString
+                            my.completeProcess(thisProcess)
+                        }
+                    })
+                } else if (Object.prototype.hasOwnProperty.call(data, 'processId')) {
+                    my.processes.forEach(function (thisProcess) {
+                        if (thisProcess.id === data.processId) {
+                            thisProcess.details.push(data.message)
+                        }
+                    })
                 }
-            })
-        })
-        ConcreteEvent.subscribe('ConcreteServerEventCloseProcess', function(e, data) {
-            my.processes.forEach(function (thisProcess) {
-                if (thisProcess.id == data.process.id) {
-                    thisProcess.dateCompleted = data.process.dateCompleted
-                    thisProcess.dateCompletedString = data.process.dateCompletedString
-                    my.completeProcess(thisProcess)
-                }
-            })
-        })
+            }
+        }
     },
     watch: {
         processes: {

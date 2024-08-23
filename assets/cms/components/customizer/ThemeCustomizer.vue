@@ -150,7 +150,7 @@ export default {
             new ConcreteAjaxRequest({
                 url: my.saveStylesAction,
                 data: {
-                    styles: my.customizerStyles,
+                    styles: JSON.stringify(my.customizerStyles),
                     customCss: my.customizerCustomCss,
                     applyTo: my.applyTo,
                     ccm_token: CCM_SECURITY_TOKEN
@@ -178,7 +178,7 @@ export default {
                     url: my.createNewSkinAction,
                     data: {
                         skinName: my.newSkinName,
-                        styles: my.customizerStyles,
+                        styles: JSON.stringify(my.customizerStyles),
                         customCss: my.customizerCustomCss,
                         ccm_token: CCM_SECURITY_TOKEN
                     },
@@ -301,7 +301,7 @@ export default {
             new ConcreteAjaxRequest({
                 url: my.saveSkinAction,
                 data: {
-                    styles: my.customizerStyles,
+                    styles: JSON.stringify(my.customizerStyles),
                     customCss: my.customizerCustomCss,
                     ccm_token: CCM_SECURITY_TOKEN
                 },
